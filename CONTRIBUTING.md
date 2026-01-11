@@ -172,7 +172,10 @@ Examples:
 
 ### 1. Fork and Clone
 
+First, fork the repository on GitHub, then:
+
 ```bash
+# Replace YOUR_USERNAME with your GitHub username
 git clone https://github.com/YOUR_USERNAME/Can2025_Project.git
 cd Can2025_Project
 ```

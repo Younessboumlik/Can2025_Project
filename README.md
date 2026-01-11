@@ -6,6 +6,14 @@ An interactive web application that uses machine learning to predict match outco
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.0%2B-red)](https://streamlit.io/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange)](https://scikit-learn.org/)
 
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - Get started in 5 minutes
+- **[Usage Guide](USAGE.md)** - Detailed usage instructions for all features
+- **[API Documentation](API.md)** - Technical documentation for developers
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
+- **[Changelog](CHANGELOG.md)** - Version history and updates
+
 ## 🌟 Features
 
 ### 1. **Single Match Prediction**
