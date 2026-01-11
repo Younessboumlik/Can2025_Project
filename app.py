@@ -67,7 +67,8 @@ def load_models():
 
 model_home, model_away, teams_data, groups = load_models()
 
-# Fix Zambia ranking (data correction)
+# Fix Zambia ranking: Update from outdated value to current FIFA ranking of 91
+# This ensures predictions use accurate ranking data for better accuracy
 if 'Zambia' in teams_data:
     teams_data['Zambia']['rank'] = 91
 
@@ -97,7 +98,9 @@ def get_distance_rabat(team_name):
         float: Distance in kilometers (default 2000 if team not found)
     """
     if team_name not in capitals:
-        return 2000  # Default distance for unknown teams
+        # Default distance of 2000km (approximate average distance within Africa)
+        # Used when team coordinates are not available
+        return 2000
     
     lat1, lon1 = capitals['Morocco']  # Rabat coordinates
     lat2, lon2 = capitals[team_name]
@@ -303,7 +306,17 @@ with tab3:
         st.markdown("### 🔥 HUITIÈMES DE FINALE")
         
         def play_knockout(t1, t2, stage_name):
-            """Simulate a knockout match with penalty shootout for draws."""
+            """
+            Simulate a knockout match with penalty shootout for draws.
+            
+            Args:
+                t1 (str): First team name
+                t2 (str): Second team name
+                stage_name (str): Tournament stage (not used, legacy parameter)
+            
+            Returns:
+                str: Winning team name
+            """
             s1, s2, _, _ = predict_match(t1, t2)
             if s1 == s2:
                 winner = t1 if np.random.rand() > 0.5 else t2
@@ -364,7 +377,17 @@ with tab4:
         knockout_stats = {team: {'R16': 0, 'QF': 0, 'SF': 0, 'Final': 0, 'Winner': 0} for team in teams_data.keys()}
         
         def simulate_group_stage():
-            """Simulate group stage matches and return qualified teams."""
+            """
+            Simulate all group stage matches and determine qualified teams.
+            
+            For each group, simulates all matches, awards points (3 for win, 1 for draw),
+            and ranks teams by points, goal difference, and goals scored.
+            
+            Returns:
+                tuple: (standings, thirds)
+                    - standings (dict): Dictionary mapping group letters to top 2 teams
+                    - thirds (list): List of third-placed teams with their statistics
+            """
             standings = {}
             thirds = []
             
@@ -391,7 +414,19 @@ with tab4:
             return standings, thirds
         
         def simulate_knockout(standings, thirds):
-            """Simulate knockout rounds and return champion."""
+            """
+            Simulate knockout rounds from Round of 16 to Final and determine champion.
+            
+            Simulates all knockout matches including penalty shootouts for draws.
+            Updates the global knockout_stats dictionary to track team progression.
+            
+            Args:
+                standings (dict): Group stage results with top 2 teams per group
+                thirds (list): Third-placed teams with their statistics
+            
+            Returns:
+                str: Name of the tournament champion
+            """
             best3 = sorted(thirds, key=lambda x: (x['p'], x['d'], x['f']), reverse=True)[:4]
             
             def get3(idx):
